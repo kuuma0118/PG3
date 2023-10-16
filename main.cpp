@@ -1,23 +1,36 @@
 #include <stdio.h>
-#include <iostream>
-#include <string>
 
-template <typename T>
-void Min(T a, T b) {
-	T merit = a < b ? a : b;
-	std::cout << merit << std::endl;
+int NormalWage(int workedTime) {
+	return 1072 * workedTime;
 }
 
-template <>
-void Min<char>(char a, char b) {
-	std::cout << "数字以外は代入できません" << std::endl;
+int RecursiveWage(int workedTime, int preHourWage = 100) {
+	if (workedTime <= 0) {
+		return 0;
+	}
+	else if (workedTime <= 1) {
+		return 100;
+	}
+
+	// 現在の時間の時給を計算
+	int currentHourWage = preHourWage * 2 - 50;
+	return  currentHourWage + RecursiveWage(workedTime - 1, currentHourWage);
 }
 
 int main() {
-	Min(1, 5);
-	Min(2.0f, 5.0f);
-	Min(3.0, 5.0);
-	Min('a', 'b');
+	int workedTime = 0;
+
+	while (true) {
+		printf("労働時間を入力してください（0以下の数字で終了） -> ");
+		scanf_s("%d", &workedTime);
+
+		if (workedTime < 0) {
+			break;
+		}
+
+		printf("一般的な賃金体系の場合 ... %d 円\n", NormalWage(workedTime));
+		printf("再帰的な賃金体系の場合 ... %d 円\n", RecursiveWage(workedTime));
+	}
 
 	return 0;
 }
