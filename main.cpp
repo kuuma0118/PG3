@@ -3,7 +3,7 @@
 
 int main() {
 	SetConsoleOutputCP(65001);
-	printf("表示");
+	printf("utf-8");
 
 	return 0;
 }
