@@ -1,18 +1,13 @@
 #pragma once
 #include "IShape.h"
 
-class Circle : public IShape {
+class Circle : public IShape
+{
 public:
-
-	void size() override {
-		space = radius * radius * 3.14f;
-	};
-	void draw() override {
-		printf("円の面積：%.2f\n", space);
-	};
-
+	Circle();
+	~Circle();
+	void size() override;
+	void draw() override;
 private:
-	float radius = 2;
-
-	float space = 0;
+	int radius_;
 };
