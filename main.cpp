@@ -4,7 +4,7 @@
 
 int main() {
 	// 敵の生成
-	std::unique_ptr<Enemy> enemy_;
+	std::unique_ptr<Enemy> enemy;
 	// 敵の行動を開始させるか
 	int isActive = false;
 
@@ -18,7 +18,7 @@ int main() {
 			printf("終了\n");
 			break;
 		}
-		enemy_->Update();
+		enemy->Update();
 	}
 
 	return 0;

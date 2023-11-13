@@ -20,7 +20,7 @@ void (Enemy::* Enemy::pfunc[])() = {
 };
 
 void Enemy::Melee() {
-	printf("近接\n");
+	printf("接近\n");
 }
 
 void Enemy::Fire() {
