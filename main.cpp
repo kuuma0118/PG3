@@ -1,48 +1,65 @@
 #include <stdio.h>
+#include <windows.h>
+#include <time.h>
 #include <stdlib.h>
 #include <functional>
-#include <Windows.h>
-#include <time.h>
 
 int main() {
+	// 乱数の初期値を生成
 	srand((unsigned int)time(nullptr));
-
-	int Choice;
-	
-	std::function<int()> answer = []() {return rand() % 6 + 1; };
-
-	std::function<void(std::function<int()>, bool, int)> callBack = [](std::function<int()> func, bool ans, int second) {
-
-		int num = func();
-
-		printf("結果は");
-		for (int i = 0; i < second; i++) {
-			printf(".");
-			Sleep(1000);
-		}
-
-		printf("%d\n", num);
-		
-		if (ans == num % 2) {
-			printf("正解！\n");
-		}
-
-		else {
-			printf("残念！\n");
-		}
-
+	// サイコロの目をランダムで決定
+	std::function<int()> randomDice = [&]() {
+		int result = rand() % 6 + 1;
+		return result;
 	};
 
-	while (true) {
+	// 指定した秒数処理を止める
+	std::function<void(int)> SetTimeout = [](int waitTime) {
+		Sleep(1000 * waitTime);
+	};
 
-		printf("半(奇数)なら1、丁(偶数)なら0を入力してください。（それ以外の数字で終了） -> ");
+	// 結果発表用の変数
+	std::function<void(int, int, int)> result = [&](int answerDice, int selectAnswer, int waitTime) {
+		printf("勝敗は...\n");
+		// 3秒間処理を停止
+		SetTimeout(waitTime);
 
-		scanf_s("%d", &Choice);
-		
-		if (Choice != 0 && Choice != 1) {
-			break;
+		// 正解のサイコロ
+		int answerDiceNum = answerDice % 2;
+		// 予想したサイコロ
+		int selectDiceNum = selectAnswer % 2;
+
+		// 偶数なら丁
+		if (answerDiceNum == 0) {
+			printf("丁!\n");
+			SetTimeout(waitTime);
+		}// 奇数なら半
+		else if (answerDiceNum != 0) {
+			printf("半!\n");
+			SetTimeout(waitTime);
 		}
 
-		callBack(answer, (bool)Choice, 3);
+		// どちらも同じ数なら正解
+		if (selectDiceNum == answerDiceNum) {
+			printf("勝利\n\n");
+		}
+		else {
+			printf("敗北\n\n");
+		}
+	};
+
+	// 入力した予想
+	int selectAnswer;
+
+	printf("サイコロは丁( 2 )又は半( 1 )どちらか\n\n");
+	while (1) {
+		printf("丁( 2 )、半( 1 )どちらかを入力\n");
+		printf("予想:");
+		scanf_s("%d", &selectAnswer);
+
+		// 結果発表
+		result(randomDice(), selectAnswer, 3);
 	}
+
+	return 0;
 }
