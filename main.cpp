@@ -1,58 +1,50 @@
 #include <stdio.h>
-#include <windows.h>
-#include <time.h>
-#include <stdlib.h>
-#include <functional>
-
-// 結果発表
-void SetTimeout(std::function<void()> result, int waitTime) {
-	printf("正解は...?\n");
-	Sleep(1000 * waitTime);
-	result();
-};
+#include <list>
 
 int main() {
-	// 乱数の初期値を生成
-	srand((unsigned int)time(nullptr));
-
-	// 入力した予想
-	int selectAnswer;
-
-	printf("サイコロは丁( 2 )、半( 1 )どっちだ\n\n");
-	printf("丁( 2 )、半( 1 )どちらかを入力\n");
-	printf("予想:");
-	scanf_s("%d", &selectAnswer);
-
-	// 結果発表用の変数
-	std::function<void()> result = [&]() {
-		// ランダムでサイコロの目を決定
-		int diceNum = rand() % 6 + 1;
-
-		// 正解のサイコロ
-		int answerDiceNum = diceNum % 2;
-		// 予想したサイコロ
-		int selectDiceNum = selectAnswer % 2;
-
-		// 偶数なら丁
-		if (answerDiceNum == 0) {
-			printf("丁!\n");
-
-		}// 奇数なら半
-		else if (answerDiceNum != 0) {
-			printf("半!\n");
-
-		}
-		// どちらも同じ数なら正解
-		if (selectDiceNum == answerDiceNum) {
-			printf("正解!!!\n\n");
-		}
-		else {
-			printf("不正解!!!\n\n");
-		}
+	// 山手線を宣言
+	std::list<const char*> YamanoteLine = {
+	"Tokyo","Kanda","Akihabara","Okachimachi","Ueno","Uguisudani","Nippori","Tabata","Komagome","Sugamo","Otsuka","Ikebukuro","Mejiro","Takadanobaba","Shin-Okubo","Shinjuku","Yoyogi","Harajuku","Shibuya","Ebisu","Meguro","Gotanda","Osaki","Shinagawa","Tamachi","Hamatsucho","Shimbashi","Yurakucho"
 	};
 
-	// 結果発表
-	SetTimeout(result, 3);
+	printf("1970年\n");
+	for (std::list<const char*>::iterator itr = YamanoteLine.begin(); itr != YamanoteLine.end(); itr++) {
+		printf(*itr);
+		if (itr != --YamanoteLine.end()) {
+			printf("→");
+		}
+	}
+	printf("\n\n");
+
+	printf("2019年\n");
+	for (std::list<const char*>::iterator itr = YamanoteLine.begin(); itr != YamanoteLine.end(); itr++) {
+		if (*itr == "Tabata") {
+			itr = YamanoteLine.insert(itr, "Nishi-Nippori");
+			break;
+		}
+	}
+	for (std::list<const char*>::iterator itr = YamanoteLine.begin(); itr != YamanoteLine.end(); itr++) {
+		printf(*itr);
+		if (itr != --YamanoteLine.end()) {
+			printf("→");
+		}
+	}
+	printf("\n\n");
+
+	printf("2022年\n");
+	for (std::list<const char*>::iterator itr = YamanoteLine.begin(); itr != YamanoteLine.end(); itr++) {
+		if (*itr == "Tamachi") {
+			itr = YamanoteLine.insert(itr, "Takanawa-Gateway");
+			break;
+		}
+	}
+	for (std::list<const char*>::iterator itr = YamanoteLine.begin(); itr != YamanoteLine.end(); itr++) {
+		printf(*itr);
+		if (itr != --YamanoteLine.end()) {
+			printf("→");
+		}
+	}
+	printf("\n");
 
 	return 0;
 }
