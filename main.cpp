@@ -10,20 +10,20 @@ int main() {
    
     std::string Copy{};
    
-    std::chrono::system_clock::time_point startCopy = std::chrono::system_clock::now();
+    std::chrono::system_clock::time_point CopyStart = std::chrono::system_clock::now();
     Copy = a;
     
-    std::chrono::system_clock::time_point endCopy = std::chrono::system_clock::now();
-    auto durationCopy = std::chrono::duration_cast<std::chrono::microseconds>(endCopy - startCopy).count();
+    std::chrono::system_clock::time_point EndedCopy = std::chrono::system_clock::now();
+    auto durationCopy = std::chrono::duration_cast<std::chrono::microseconds>(EndedCopy - CopyStart).count();
 
     
     std::string move{};
     
-    std::chrono::system_clock::time_point startMove = std::chrono::system_clock::now();
+    std::chrono::system_clock::time_point MoveingStart = std::chrono::system_clock::now();
     move = std::move(a);
     
-    std::chrono::system_clock::time_point endMove = std::chrono::system_clock::now();
-    auto durationMove = std::chrono::duration_cast<std::chrono::microseconds>(endMove - startMove).count();
+    std::chrono::system_clock::time_point EndedMove = std::chrono::system_clock::now();
+    auto durationMove = std::chrono::duration_cast<std::chrono::microseconds>(EndedMove - MoveingStart).count();
 
    
     std::cout << "100,000文字を移動＆コピーで比較。" << std::endl;
