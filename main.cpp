@@ -1,48 +1,58 @@
 #include <stdio.h>
+#include <windows.h>
+#include <time.h>
 #include <stdlib.h>
 #include <functional>
-#include <Windows.h>
-#include <time.h>
+
+// 結果発表
+void SetTimeout(std::function<void()> result, int waitTime) {
+	printf("正解は...?\n");
+	Sleep(1000 * waitTime);
+	result();
+};
 
 int main() {
+	// 乱数の初期値を生成
 	srand((unsigned int)time(nullptr));
 
-	int Choice;
-	
-	std::function<int()> answer = []() {return rand() % 6 + 1; };
+	// 入力した予想
+	int selectAnswer;
 
-	std::function<void(std::function<int()>, bool, int)> callBack = [](std::function<int()> func, bool ans, int second) {
+	printf("サイコロは丁( 2 )、半( 1 )どっちだ\n\n");
+	printf("丁( 2 )、半( 1 )どちらかを入力\n");
+	printf("予想:");
+	scanf_s("%d", &selectAnswer);
 
-		int num = func();
+	// 結果発表用の変数
+	std::function<void()> result = [&]() {
+		// ランダムでサイコロの目を決定
+		int diceNum = rand() % 6 + 1;
 
-		printf("結果は");
-		for (int i = 0; i < second; i++) {
-			printf(".");
-			Sleep(1000);
+		// 正解のサイコロ
+		int answerDiceNum = diceNum % 2;
+		// 予想したサイコロ
+		int selectDiceNum = selectAnswer % 2;
+
+		// 偶数なら丁
+		if (answerDiceNum == 0) {
+			printf("丁!\n");
+
+		}// 奇数なら半
+		else if (answerDiceNum != 0) {
+			printf("半!\n");
+
 		}
-
-		printf("%d\n", num);
-		
-		if (ans == num % 2) {
-			printf("正解！\n");
+		// どちらも同じ数なら正解
+		if (selectDiceNum == answerDiceNum) {
+			printf("正解!!!\n\n");
 		}
-
 		else {
-			printf("残念！\n");
+			printf("不正解!!!\n\n");
 		}
-
 	};
 
-	while (true) {
+	// 結果発表
+	SetTimeout(result, 3);
 
-		printf("半(奇数)なら1、丁(偶数)なら0を入力してください。（それ以外の数字で終了） -> ");
-
-		scanf_s("%d", &Choice);
-		
-		if (Choice != 0 && Choice != 1) {
-			break;
-		}
-
-		callBack(answer, (bool)Choice, 3);
-	}
+	return 0;
 }
