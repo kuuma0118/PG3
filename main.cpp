@@ -1,26 +1,34 @@
 #include <stdio.h>
-#include <thread>
-
-void CurrentThread(const char* thread) {
-	printf("%s\n", thread);
-}
+#include <iostream>
+#include <string>
+#include <chrono>
 
 int main() {
-	
-	const char* thread[3] = {
-		"Thread1",
-		"Thread2",
-		"Thread3"
-	};
-	
-	std::thread T1(CurrentThread, thread[0]);
-	T1.join();
+    
+    std::string a(100000, 'a');
 
-	std::thread T2(CurrentThread, thread[1]);
-	T2.join();
+   
+    std::string Copy{};
+   
+    std::chrono::system_clock::time_point startCopy = std::chrono::system_clock::now();
+    Copy = a;
+    
+    std::chrono::system_clock::time_point endCopy = std::chrono::system_clock::now();
+    auto durationCopy = std::chrono::duration_cast<std::chrono::microseconds>(endCopy - startCopy).count();
 
-	std::thread T3(CurrentThread, thread[2]);
-	T3.join();
+    
+    std::string move{};
+    
+    std::chrono::system_clock::time_point startMove = std::chrono::system_clock::now();
+    move = std::move(a);
+    
+    std::chrono::system_clock::time_point endMove = std::chrono::system_clock::now();
+    auto durationMove = std::chrono::duration_cast<std::chrono::microseconds>(endMove - startMove).count();
 
-	return 0;
+   
+    std::cout << "100,000文字を移動＆コピーで比較。" << std::endl;
+    std::cout << "コピー: " << durationCopy << "μs" << std::endl;
+    std::cout << "移動: " << durationMove << "μs" << std::endl;
+
+    return 0;
 }
